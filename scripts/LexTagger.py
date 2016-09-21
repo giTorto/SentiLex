@@ -77,6 +77,50 @@ class LexTagger:
 			matches = self.rmSubsets(matches)
 		return matches
 
+	def tagList_new(self, word_list, multiple, lexicon):
+		''' tag list with lexicon, keeping longest matches '''
+		# create dictionary multiple[w0] -> [[w1,w2,w3,w4],[w5,w2,w3,w4],[w1,w2,w3],[w2,w3]], sorted by length
+
+		score_matches = []
+		i = 0
+		while i < len(word_list):
+			multi_word_added = False
+			if word_list[i] in multiple:
+				combinations = multiple[word_list[i]]
+				# if there are combinations of multiple word, try to see if they are matched
+				for comb in combinations:
+					k = 1
+					continuing = True
+					for word in comb:
+						# if one word in the combination is different, stop checking the combination
+						if word_list[i+k] != word:
+							continuing = False
+							break
+						k += 1
+					# if continuing is still true, a full combination is found
+					if continuing:
+						# no need to check words that already in the combination
+						score_matches.append([[x] for x in range(i, i + k)])
+						multi_word_added = True
+						i += k
+						break
+
+				if multi_word_added:
+					continue
+
+				# if no combination found
+				if word_list[i] in lexicon:
+					score_matches.append([[i]])
+				# no matter what, update the index
+				i += 1
+			else:
+				if word_list[i] in lexicon:
+					score_matches.append([[i]])
+				i += 1
+
+		# print 'final matches', matches
+		return score_matches
+
 	def genString(self, e):
 		''' generate string from lexicon entry list '''
 		parts = [self.ts.join(x) for x in e]

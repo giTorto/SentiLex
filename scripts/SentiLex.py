@@ -146,7 +146,8 @@ class SentiSentenceAnalyser:
 							e.g "How are you?" becomes ["How","are","you?"].
 							If the nltk.TweetTokenizer is used instead it will become ["how","are","you","?"]
 			newer_version: if this flag is set to true it uses the new version to found longest word combination.
-						The new version is faster than the old one.
+						The new version is faster than the old one, but it accepts the first longest word combination,
+						without checking whether there are better ones or not. This means 0.05 less accuracy.
 			lemmatizer: if no lemmatizer is provided, the wordnet lemmatizer is used
 		Returns:
 			None

@@ -78,8 +78,12 @@ class LexTagger:
 		return matches
 
 	def tagList_new(self, word_list, multiple, lexicon):
-		''' tag list with lexicon, keeping longest matches '''
-		# create dictionary multiple[w0] -> [[w1,w2,w3,w4],[w5,w2,w3,w4],[w1,w2,w3],[w2,w3]], sorted by length
+		''' tag list with lexicon, keeping longest matches
+			This implementation is faster but contains a bug.
+			TODO: In order to fix it and keep the same speed, it must be implemented with dynamic programming.
+		'''
+
+		# based on dictionary multiple[w0] -> [[w1,w2,w3,w4],[w5,w2,w3,w4],[w1,w2,w3],[w2,w3]], sorted by length
 
 		score_matches = []
 		i = 0
